@@ -1,34 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreateForm from "./CreateForm";
 import Todo from "./Todo";
 
 function TodoWrapper() {
-  const [todos, setTodos] = useState([
-    {
-      id: Math.random(),
-      content: "HTMLを学ぶ",
-      isCompleted: false,
-      isEditing: false,
-    },
-    {
-      id: Math.random(),
-      content: "CSSを学ぶ",
-      isCompleted: false,
-      isEditing: false,
-    },
-    {
-      id: Math.random(),
-      content: "JavaScriptを学ぶ",
-      isCompleted: false,
-      isEditing: false,
-    },
-    {
-      id: Math.random(),
-      content: "Reactを学ぶ",
-      isCompleted: false,
-      isEditing: false,
-    },
-  ]);
+  // 初始化狀態，從 localStorage 加載數據
+  const [todos, setTodos] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [
+      {
+        id: Math.random(),
+        content: "HTMLを学ぶ",
+        isCompleted: false,
+        isEditing: false,
+      },
+      {
+        id: Math.random(),
+        content: "CSSを学ぶ",
+        isCompleted: false,
+        isEditing: false,
+      },
+      {
+        id: Math.random(),
+        content: "JavaScriptを学ぶ",
+        isCompleted: false,
+        isEditing: false,
+      },
+      {
+        id: Math.random(),
+        content: "Reactを学ぶ",
+        isCompleted: false,
+        isEditing: false,
+      },
+    ];
+  });
+
+  // 當 todos 狀態改變時，將數據存入 localStorage
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   const addTodo = (content) => {
     setTodos([
@@ -110,7 +119,7 @@ function TodoWrapper() {
             : "すべて完了しました"}
         </p>
       )}
-
+      
     </div>
   );
 }
